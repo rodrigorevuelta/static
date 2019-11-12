@@ -1,13 +1,11 @@
 pipeline {
     agent any
     stages {
-	stage('Build') {
+	stage('Upload to aws') {
 	    steps {
-		sh 'echo "Hello World"'
-		sh '''
-		    echo "Multiline shell steps works too"
-		    ls -lash
-		'''
+		withAWS(credentials:'aws-static',region:'eu-central-1') {
+		    s3Upload(file:'index.html',bucket:'rodrigorr-pipeline')
+		}
 	    }
 	}
     }
